@@ -26,26 +26,26 @@
 <div class="content">
   <div class="item" id="mainProduct">
     <h3>无线降噪耳机 Pro Max</h3>
-    <p>与新闻站共用同一 tracker iframe。若第三方 IndexedDB 未按顶层站分区，此处 iframe 应显示<strong>与 A 站相同的 UID</strong>，且 visit 列表含 A 站 hostname。</p>
+    <p>与 A 站共用同一第三方 iframe。看框内<strong>用户 ID</strong>是否与新闻站一致，记录里是否出现两个不同网站。</p>
     <div class="price">¥1,299</div>
   </div>
 
   <div class="ad-box">
     <div class="ad-label">广告 / 第三方 iframe（C）</div>
     <iframe id="tf" title="tracker" sandbox="allow-scripts allow-same-origin"></iframe>
-    <p class="hint">本站：GitHub Pages · 与 A 站共用同一 <code>TRACKER_BASE</code>。</p>
+    <p class="hint">本站：GitHub Pages · 与 A 站同一 Tracker</p>
   </div>
 </div>
 
 <script>
 (function(){
-  var TRACKER_BASE = 'https://idb-cross-karess-20260324.netlify.app';
+  var TRACKER_BASE = 'https://idb-tracker-karess.vercel.app';
   var title = document.getElementById('mainProduct').querySelector('h3').textContent;
   var price = document.getElementById('mainProduct').querySelector('.price').textContent;
   var pageUrl = location.pathname || '/';
   document.getElementById('tf').src =
-    TRACKER_BASE + '/api/idb-tracker-frame'
-    + '?page_title=' + encodeURIComponent(title + ' ' + price)
+    TRACKER_BASE.replace(/\/?$/, '') + '/?'
+    + 'page_title=' + encodeURIComponent(title + ' ' + price)
     + '&page_url=' + encodeURIComponent(location.host + pageUrl)
     + '&top_site=' + encodeURIComponent(location.hostname);
 })();
