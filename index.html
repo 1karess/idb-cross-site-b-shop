@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>优品商城 · IndexedDB 测试</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,'PingFang SC','Helvetica Neue',sans-serif;background:#fff5f5;color:#1e293b}
+  .nav{background:#fff;padding:14px 16px;font-weight:700;font-size:16px;border-bottom:1px solid #fecaca;color:#dc2626}
+  .content{padding:12px 16px}
+  .item{background:#fff;border-radius:8px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .item h3{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:4px}
+  .item p{font-size:13px;color:#64748b;line-height:1.6}
+  .price{color:#dc2626;font-weight:700;font-size:17px;margin-top:6px}
+  .ad-label{font-size:9px;color:#94a3b8;margin-bottom:4px;padding-left:2px}
+  .ad-box{margin-bottom:10px}
+  iframe{width:100%;border:none;border-radius:6px;min-height:220px;background:#0f172a}
+  .hint{font-size:11px;color:#64748b;margin-top:8px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="nav">优品商城 <span style="font-weight:400;font-size:12px;color:#64748b">（站点 B）</span></div>
+
+<div class="content">
+  <div class="item" id="mainProduct">
+    <h3>无线降噪耳机 Pro Max</h3>
+    <p>与新闻站共用同一 tracker iframe。若第三方 IndexedDB 未按顶层站分区，此处 iframe 应显示<strong>与 A 站相同的 UID</strong>，且 visit 列表含 A 站 hostname。</p>
+    <div class="price">¥1,299</div>
+  </div>
+
+  <div class="ad-box">
+    <div class="ad-label">广告 / 第三方 iframe（C）</div>
+    <iframe id="tf" title="tracker" sandbox="allow-scripts allow-same-origin"></iframe>
+    <p class="hint">与 A 站共用同一 <code>TRACKER_BASE</code>。</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var TRACKER_BASE = 'https://idb-cross-karess-20260324.netlify.app';
+  var title = document.getElementById('mainProduct').querySelector('h3').textContent;
+  var price = document.getElementById('mainProduct').querySelector('.price').textContent;
+  var pageUrl = location.pathname || '/';
+  document.getElementById('tf').src =
+    TRACKER_BASE + '/api/idb-tracker-frame'
+    + '?page_title=' + encodeURIComponent(title + ' ' + price)
+    + '&page_url=' + encodeURIComponent(location.host + pageUrl)
+    + '&top_site=' + encodeURIComponent(location.hostname);
+})();
+</script>
+</body>
+</html>
